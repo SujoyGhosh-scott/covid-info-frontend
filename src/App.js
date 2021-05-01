@@ -1,10 +1,34 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import axios from "axios";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+
+import Home from "./components/Home";
+import Oxygen from "./components/Oxygen";
+import Plasma from "./components/Plasma";
+import FoodDelivry from "./components/FoodDelivry";
+import Vaccine from "./components/Vaccine";
+import News from "./components/News";
+import About from "./components/About";
+import Default from "./components/Default";
 
 function App() {
   const [country, setCountry] = useState("india");
-  const [range, setRange] = useState("1mo");
+  const [range, setRange] = useState("2mo");
+  const [mode, setMode] = useState("light");
+
+  const theme = createMuiTheme({
+    palette: {
+      primary: {
+        main: "#26a69a",
+      },
+      secondary: {
+        main: "#039be5",
+      },
+      type: "light",
+    },
+  });
 
   useEffect(() => {
     const getFromDate = (today) => {
@@ -14,11 +38,12 @@ function App() {
       } else if (range === "1wk") {
         let lastWeek = today.setDate(today.getDate() - 7);
         return moment(lastWeek).format("YYYY-MM-DD");
-      } else if (range === "3mo") {
+      } else if (range === "2mo") {
         //fix 3 month date
-        let lastQuater = today.setMonth(today.getMonth() - 3);
+        let lastQuater = today.setMonth(today.getMonth() - 2);
         let tempQ = new Date(lastQuater);
-        console.log("last quater: ", lastQuater);
+        console.log("last quater: ", tempQ);
+        console.log("formated: ", moment(tempQ).format("YYYY-MM-DD"));
         return moment(tempQ).format("YYYY-MM-DD");
       }
     };
@@ -34,9 +59,38 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h2>hello from app</h2>
-    </div>
+    <Router>
+      <ThemeProvider theme={theme}>
+        <div className="app">
+          <Switch>
+            <Route path="/" exact>
+              <Home />
+            </Route>
+            <Route path="/oxygen" exact>
+              <Oxygen />
+            </Route>
+            <Route path="/plasma" exact>
+              <Plasma />
+            </Route>
+            <Route path="/news" exact>
+              <News />
+            </Route>
+            <Route path="/food" exact>
+              <FoodDelivry />
+            </Route>
+            <Route path="/about" exact>
+              <About />
+            </Route>
+            <Route path="/vaccine" exact>
+              <Vaccine />
+            </Route>
+            <Route>
+              <Default />
+            </Route>
+          </Switch>
+        </div>
+      </ThemeProvider>
+    </Router>
   );
 }
 
