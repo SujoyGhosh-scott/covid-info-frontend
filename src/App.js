@@ -12,6 +12,7 @@ import Vaccine from "./components/Vaccine";
 import News from "./components/News";
 import About from "./components/About";
 import Default from "./components/Default";
+import AppBar from "./components/Appbar";
 
 function App() {
   const [country, setCountry] = useState("india");
@@ -29,7 +30,7 @@ function App() {
       type: "light",
     },
   });
-
+  /*
   useEffect(() => {
     const getFromDate = (today) => {
       if (range === "1mo") {
@@ -56,7 +57,7 @@ function App() {
         `https://api.covid19tracking.narrativa.com/api/country/${country}?date_from=${date_from}&date_to=${date_to}`
       )
       .then((res) => console.log("data: ", res.data));
-  }, []);
+  }, []);*/
 
   return (
     <Router>
@@ -88,6 +89,7 @@ function App() {
               <Default />
             </Route>
           </Switch>
+          <AppBar />
         </div>
       </ThemeProvider>
     </Router>
