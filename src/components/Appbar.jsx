@@ -12,7 +12,7 @@ import BubbleChartIcon from "@material-ui/icons/BubbleChart";
 import LocalHospitalIcon from "@material-ui/icons/LocalHospital";
 import AnnouncementIcon from "@material-ui/icons/Announcement";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     flexGrow: 1,
     width: "100%",

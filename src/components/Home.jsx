@@ -11,6 +11,7 @@ import Brightness2Icon from "@material-ui/icons/Brightness2";
 import { makeStyles } from "@material-ui/core/styles";
 
 import Cases from "./Cases";
+import RegionSelector from "./RegionSelector";
 
 const useStyles = makeStyles(() => ({
   homeHeader: {
@@ -49,6 +50,8 @@ export default ({ mode, setMode }) => {
   const [chartLabel, setChartLabel] = useState([]);
   const [yesterdayData, setYD] = useState({});
   const [yesterdayRegionalData, setYRD] = useState([]);
+  const [selectedRegionName, setSRN] = useState("");
+  const [selectedRegion, setSR] = useState({});
   const classes = useStyles();
 
   useEffect(() => {
@@ -77,13 +80,7 @@ export default ({ mode, setMode }) => {
         `https://api.covid19tracking.narrativa.com/api/country/${country}?date_from=${date_from}&date_to=${date_to}`
       )
       .then((res) => {
-        console.log("data: ", Object.values(res.data.dates));
-        console.log(
-          "yesterday data: ",
-          Object.values(res.data.dates)[
-            Object.values(res.data.dates).length - 4
-          ].countries.India
-        );
+        //console.log("data: ", Object.values(res.data.dates));
         setYD(
           Object.values(res.data.dates)[
             Object.values(res.data.dates).length - 4
@@ -115,6 +112,10 @@ export default ({ mode, setMode }) => {
   const handleMode = () => {
     if (mode === "light") setMode("dark");
     else setMode("light");
+  };
+
+  const getRegionalData = () => {
+    setSR(yesterdayRegionalData.filter((r) => r.id === selectedRegionName));
   };
 
   return (
@@ -201,6 +202,20 @@ export default ({ mode, setMode }) => {
           recovered={yesterdayData.today_recovered}
           open={yesterdayData.today_open_cases}
         />
+        <RegionSelector
+          setSRN={setSRN}
+          yesterdayRegionalData={yesterdayRegionalData}
+          getRegionalData={getRegionalData}
+        />
+        {selectedRegion.length > 0 && (
+          <Cases
+            title={selectedRegion[0].name}
+            confirmed={selectedRegion[0].today_new_confirmed}
+            deaths={selectedRegion[0].today_new_deaths}
+            recovered={selectedRegion[0].today_new_recovered}
+            open={selectedRegion[0].today_new_open_cases}
+          />
+        )}
       </Grid>
       <Grid item sm={2}></Grid>
     </Grid>

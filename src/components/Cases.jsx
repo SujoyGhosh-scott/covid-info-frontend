@@ -18,7 +18,7 @@ export default ({ title, confirmed, deaths, recovered, open }) => {
         <Grid container item sm={3} xs={6}>
           🤪
           <Typography
-            variant="suntitle1"
+            variant="subtitle1"
             gutterBottom
             style={{ marginLeft: "1rem" }}
             color="primary"
@@ -29,7 +29,7 @@ export default ({ title, confirmed, deaths, recovered, open }) => {
         <Grid container item sm={3} xs={6}>
           💀
           <Typography
-            variant="suntitle1"
+            variant="subtitle1"
             gutterBottom
             color="primary"
             style={{ marginLeft: "1rem" }}
@@ -40,7 +40,7 @@ export default ({ title, confirmed, deaths, recovered, open }) => {
         <Grid container item sm={3} xs={6}>
           😎
           <Typography
-            variant="suntitle1"
+            variant="subtitle1"
             gutterBottom
             color="primary"
             style={{ marginLeft: "1rem" }}
@@ -51,7 +51,7 @@ export default ({ title, confirmed, deaths, recovered, open }) => {
         <Grid container item sm={3} xs={6}>
           🤒
           <Typography
-            variant="suntitle1"
+            variant="subtitle1"
             gutterBottom
             color="primary"
             style={{ marginLeft: "1rem" }}
