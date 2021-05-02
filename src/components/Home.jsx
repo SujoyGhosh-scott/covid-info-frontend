@@ -3,7 +3,6 @@ import moment from "moment";
 import axios from "axios";
 import { Line } from "react-chartjs-2";
 
-import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,7 +10,7 @@ import Brightness7Icon from "@material-ui/icons/Brightness7";
 import Brightness2Icon from "@material-ui/icons/Brightness2";
 import { makeStyles } from "@material-ui/core/styles";
 
-import CountryInput from "./CountryInput";
+import Cases from "./Cases";
 
 const useStyles = makeStyles(() => ({
   homeHeader: {
@@ -45,8 +44,11 @@ const useStyles = makeStyles(() => ({
 export default ({ mode, setMode }) => {
   const [country, setCountry] = useState("india");
   const [range, setRange] = useState("1mo");
-  const [chartData, setChartData] = useState([]);
+  const [newRecordData, setNewRecordData] = useState([]);
+  const [recoveredData, setRecoveredData] = useState([]);
   const [chartLabel, setChartLabel] = useState([]);
+  const [yesterdayData, setYD] = useState({});
+  const [yesterdayRegionalData, setYRD] = useState([]);
   const classes = useStyles();
 
   useEffect(() => {
@@ -75,17 +77,37 @@ export default ({ mode, setMode }) => {
         `https://api.covid19tracking.narrativa.com/api/country/${country}?date_from=${date_from}&date_to=${date_to}`
       )
       .then((res) => {
-        //console.log("data: ", Object.values(res.data.dates));
+        console.log("data: ", Object.values(res.data.dates));
+        console.log(
+          "yesterday data: ",
+          Object.values(res.data.dates)[
+            Object.values(res.data.dates).length - 4
+          ].countries.India
+        );
+        setYD(
+          Object.values(res.data.dates)[
+            Object.values(res.data.dates).length - 4
+          ].countries.India
+        );
+        setYRD(
+          Object.values(res.data.dates)[
+            Object.values(res.data.dates).length - 4
+          ].countries.India.regions
+        );
         let x = [];
         let x2 = [];
+        let x3 = [];
         Object.values(res.data.dates).map((val) => {
           x.push(val.countries.India.today_new_confirmed);
           x2.push(val.countries.India.date);
+          x3.push(val.countries.India.today_new_recovered);
         });
         x.pop();
         x2.pop();
-        console.log("x: ", x);
-        setChartData(x);
+        x3.pop();
+        //console.log("x: ", x);
+        setNewRecordData(x);
+        setRecoveredData(x3);
         setChartLabel(x2);
       });
   }, [country, range]);
@@ -95,17 +117,8 @@ export default ({ mode, setMode }) => {
     else setMode("light");
   };
 
-  const handleCountrySelect = (e) => {
-    console.log("form country select, got: ", e.target.value);
-    setCountry(e.target.value);
-  };
-
-  const getCountryData = () => {
-    console.log("searching with: ", country);
-  };
-
   return (
-    <Grid container>
+    <Grid container style={{ marginBottom: "6rem" }}>
       <Grid item sm={2}></Grid>
       <Grid direction="column" container item sm={8} xs={12}>
         <Grid className={classes.homeHeader}>
@@ -121,20 +134,6 @@ export default ({ mode, setMode }) => {
         <Typography variant="subtitle2" color="primary">
           Do not go out unless it's really important
         </Typography>
-        <Grid style={{ display: "flex", alignItems: "center" }}>
-          <CountryInput
-            country={country}
-            handleCountrySelect={handleCountrySelect}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => getCountryData()}
-            className={classes.countryButton}
-          >
-            Go
-          </Button>
-        </Grid>
         <Grid className={classes.chartButtons}>
           <button
             onClick={() => setRange("2mo")}
@@ -168,7 +167,14 @@ export default ({ mode, setMode }) => {
               datasets: [
                 {
                   label: `New Confirmed Cases in ${country}`,
-                  data: chartData,
+                  data: newRecordData,
+                  borderWidth: 1,
+                  backgroundColor: "#f71111",
+                  borderColor: "#ed2409",
+                },
+                {
+                  label: `Recovered Cases in ${country}`,
+                  data: recoveredData,
                   borderWidth: 1,
                   backgroundColor: "#2a9dfa",
                   borderColor: "#3d8ccc",
@@ -181,8 +187,20 @@ export default ({ mode, setMode }) => {
             }}
           />
         </Grid>
-        {console.log("chartdata", chartData)}
-        {/**other info */}
+        <Cases
+          title="India"
+          confirmed={yesterdayData.today_new_confirmed}
+          deaths={yesterdayData.today_new_deaths}
+          recovered={yesterdayData.today_new_recovered}
+          open={yesterdayData.today_new_open_cases}
+        />
+        <Cases
+          title="Total"
+          confirmed={yesterdayData.today_confirmed}
+          deaths={yesterdayData.today_deaths}
+          recovered={yesterdayData.today_recovered}
+          open={yesterdayData.today_open_cases}
+        />
       </Grid>
       <Grid item sm={2}></Grid>
     </Grid>
