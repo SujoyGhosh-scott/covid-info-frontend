@@ -12,7 +12,7 @@ export default function () {
     <Grid container>
       <Grid item sm={2} xs={0}></Grid>
       <Grid item sm={8} xs={12}>
-        <h1>news</h1>
+        <h1>News</h1>
       </Grid>
       <Grid item sm={2} xs={0}></Grid>
     </Grid>
