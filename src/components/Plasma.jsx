@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(() => ({}));
 
-export default () => {
+export default function () {
   const classes = useStyles();
 
   return (
@@ -17,4 +17,4 @@ export default () => {
       <Grid item sm={2} xs={0}></Grid>
     </Grid>
   );
-};
+}

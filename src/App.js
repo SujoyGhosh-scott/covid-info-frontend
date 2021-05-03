@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 
-import Home from "./components/Home";
+import Home from "./components/Home/Home";
 import Oxygen from "./components/Oxygen";
 import Plasma from "./components/Plasma";
 import FoodDelivry from "./components/FoodDelivry";

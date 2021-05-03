@@ -42,7 +42,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default ({ mode, setMode }) => {
+export default function ({ mode, setMode }) {
   const [country, setCountry] = useState("india");
   const [range, setRange] = useState("1mo");
   const [newRecordData, setNewRecordData] = useState([]);
@@ -220,4 +220,4 @@ export default ({ mode, setMode }) => {
       <Grid item sm={2}></Grid>
     </Grid>
   );
-};
+}
